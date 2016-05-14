@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 启动动态方法调用(DMI)模式 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    
+    <!-- 启动开发者模式 -->
+    <constant name="struts.devMode" value="true" />
+
+	<constant name="struts.message.error.content.type.not.allowed" value="上传的文件不受支持"></constant>
+	
+	<!-- name 属性是必须的，注意namespace的写法，有/ -->
+    <package name="default" namespace="/default" extends="struts-default"> 
+    	
+    	<interceptors>
+    		<!-- 定义全局拦截器 -->    		
+    		<interceptor name="globalActionInterceptor" class="com.univ.interceptor.GlobalActionInterceptor">
+    			<param name="globleName">prefixGloblaNamepostfix</param>
+    		</interceptor>
+    	
+    		<!-- 定义只拦截interceptorAction的拦截器 -->
+    		<interceptor name="singleActionInterceptor" class="com.univ.interceptor.SingleActionInterceptor"></interceptor>
+    		
+    		<!-- 定义全局拦截器栈：将自定义的globalActionInterceptor和默认的defaultStack组装到一起 
+    		因为默认的拦截器（栈）只能有一个，为了使用默认拦截器提供的功能必须定义到拦截器栈-->
+    		<interceptor-stack name="globalStack">    		
+    			<interceptor-ref name="defaultStack"></interceptor-ref>
+    			<interceptor-ref name="globalActionInterceptor"></interceptor-ref>
+    		</interceptor-stack>
+    	</interceptors>
+    	
+    	<!-- 设置全局拦截器为自定义拦截器 -->
+    	<default-interceptor-ref name="globalStack"></default-interceptor-ref>
+    	
+    	<!-- 此包下的全局返回视图，global-results标签好像必须放在拦截器的后面 -->
+    	<global-results>
+    		<!-- 未登陆用户访问action时重定向到登陆页面，注意这里需要采用重定向（转发时地址栏不变，看起来会很奇怪） -->
+    		<result type="redirect" name="login">/login.jsp</result>
+    	</global-results>
+    	
+    	<action name="loginAction" class="com.univ.action.LoginAction">
+			<result name="success">/WEB-INF/content/index.jsp</result>
+			<!-- 注意，登陆action不能被拦截，否则永远无法登陆，因为此时还没有进行操作的用户是否通过认证 ；
+			这里的方法也很有趣，让默认的拦截器拦截此action，而不是上面定义的全局拦截器-->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+        <action name="studentAction" class="com.univ.action.StudentAction">
+			<result name="success">/WEB-INF/content/message.jsp</result>
+			<result name="input">/WEB-INF/content/input.jsp</result>
+		</action>
+		
+		<!-- 配置在action模拟访问servlet相关对象的action -->
+		<action name="servletAction" class="com.univ.action.ServletAction">
+			<result name="request">/WEB-INF/content/request.jsp</result>
+			<result name="session">/WEB-INF/content/session.jsp</result>
+			<result name="servletContext">/WEB-INF/content/servletContext.jsp</result>
+		</action>
+		
+		<!-- 配置ztree和ajax需要用到的action -->
+		<action name="ajaxAction" class="com.univ.action.AjaxAction">
+		</action>
+		
+		<!-- 专门为拦截器的演示配置一个拦截器，不污染其他代码 -->
+		<action name="interceptorAction" class="com.univ.action.IntercepterAction">
+			<result>/WEB-INF/content/interceptor.jsp</result>
+			
+			<!-- 设置拦截此action的拦截器 -->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="singleActionInterceptor"></interceptor-ref>
+		</action>
+		
+		<!--  -->
+		<action name="fileUpload" class="com.univ.action.FileUploadAction">
+			<!-- 用以存放上传文件的存放路径 -->
+			<param name="savePath">d:\\upload</param>
+			<result>/WEB-INF/content/fileUpload_success.jsp</result>
+			<result name="input">/fileUpload.jsp</result>
+			<interceptor-ref name="fileUpload">
+				<!-- 设置允许上传的文件类型 -->
+				<param name="allowedTypes">image/png,image/gif,image/jpeg</param>
+				<!-- 设置允许上传的文件大小，单位是字节 -->
+				<param name="maximumSize">20000</param>
+			</interceptor-ref>
+			<!-- 默认的拦截器必须放在下面 -->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>	
+		
+		<!-- 文件下载action -->
+		<action name="FileDownload" class="com.univ.action.FileDownload">
+		<!--处理stream返回类型的类是 org.apache.struts2.dispatcher.StreamResult -->
+		  <result name="success" type="stream">  
+			<!-- 下面的参数应该传给StreamResult的相应属性，下面的参数名和StreamResult中的属性一一对应 -->
+			  <param name="contentType">text/plain</param>  
+			  <!-- 默认为 inline(在线打开)，设置为 attachment 将会告诉浏览器下载该文件，filename对应于action中的fileName属性，指定下载文件保存时的文件名，若未指定将会是以浏览的页面名作为文件名（如以 download.action 作为文件名），这里使用的是动态文件名，${fileName}, 它将通过 Action 的 getFileName() 获得文件名 ，如果文件名为中文，则需要转码-->   
+			  <param name="contentDisposition">attachment;fileName="${fileName}"</param>  
+			  <!-- 指示 StreamResult 通过 inputName 属性值的 getter方法,意味着你的 Action要有这个方法 （如这里的getDownloadFile） -->
+			  <param name="inputName">downloadFile</param>  
+			  <param name="bufferSize">1024</param>  
+		  </result>  
+		</action> 	
+		
+		<action name="jxlAction" class="com.univ.action.JxlAction">
+			<result name="success">/WEB-INF/content/jxl.jsp</result>
+		</action>
+		
+		
+    </package>
+</struts>
