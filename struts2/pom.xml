@@ -81,6 +81,13 @@
             <version>2.3.24</version>
         </dependency>
 
+        <!-- http://mvnrepository.com/artifact/org.apache.struts/struts2-config-browser-plugin -->
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-config-browser-plugin</artifactId>
+            <version>2.3.24</version>
+        </dependency>
+
         <!-- http://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl -->
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
