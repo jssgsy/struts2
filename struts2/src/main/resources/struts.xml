@@ -51,6 +51,7 @@
         <action name="studentAction" class="com.univ.action.StudentAction">
 			<result name="success">/WEB-INF/content/message.jsp</result>
 			<result name="input">/WEB-INF/content/input.jsp</result>
+			<result name="checkbox">/WEB-INF/student/checkbox.jsp</result>
 		</action>
 		
 		<!-- 配置在action模拟访问servlet相关对象的action -->

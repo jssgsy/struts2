@@ -19,6 +19,15 @@
 	<input type="submit" value="ok" />
 </form>
 
+<h3>struts2接收复选框的值</h3>
+<form action="<%=path %>/default/studentAction!checkbox">
+    beijing: <input type="checkbox" name="city" value="beijing"/>
+    shanghai:<input type="checkbox" name="city" value="shanghai"/>
+    wuhan:<input type="checkbox" name="city" value="wuhan"/>
+    zhejiang:<input type="checkbox" name="city" value="zhejiang"/>
+    <input  type="submit" />
+</form>
+
 <h3>通过超链接访问action的默认execute方法(test):student.name=lml&student.age=24</h3>
 <a href="<%=path %>/default/studentAction?student.name=lml&student.age=24">通过超链接访问action的默认execute方法</a>
 
@@ -60,6 +69,8 @@
 
 <!-- 跳转到jxl测试页面 -->
 <a href="<%=path %>/default/jxlAction!showContents"><h3>跳转到jxl测试页面</h3></a>
+
+
 
 </body>
 </html>
