@@ -13,26 +13,27 @@
 	<constant name="struts.message.error.content.type.not.allowed" value="上传的文件不受支持"></constant>
 	
 	<!-- name 属性是必须的，注意namespace的写法，有/ -->
-    <package name="default" namespace="/default" extends="struts-default"> 
-    	
-    	<interceptors>
-    		<!-- 定义全局拦截器 -->    		
+    <package name="default" namespace="/default" extends="struts-default">
+
+		<!-- 在这里定义拦截器、拦截器栈 -->
+		<interceptors>
+			<!--这个拦截器中有登陆验证的功能,没有登录则跳转到登录页面-->
     		<interceptor name="globalActionInterceptor" class="com.univ.interceptor.GlobalActionInterceptor">
     			<param name="globleName">prefixGloblaNamepostfix</param>
     		</interceptor>
     	
-    		<!-- 定义只拦截interceptorAction的拦截器 -->
     		<interceptor name="singleActionInterceptor" class="com.univ.interceptor.SingleActionInterceptor"></interceptor>
     		
-    		<!-- 定义全局拦截器栈：将自定义的globalActionInterceptor和默认的defaultStack组装到一起 
-    		因为默认的拦截器（栈）只能有一个，为了使用默认拦截器提供的功能必须定义到拦截器栈-->
+    		<!-- 定义拦截器栈：将自定义的globalActionInterceptor和默认的拦截器栈defaultStack组装到一起,
+    			默认的拦截器（栈）只能有一个，将自定义的放到defaultStack后
+    		-->
     		<interceptor-stack name="globalStack">    		
     			<interceptor-ref name="defaultStack"></interceptor-ref>
     			<interceptor-ref name="globalActionInterceptor"></interceptor-ref>
     		</interceptor-stack>
     	</interceptors>
     	
-    	<!-- 设置全局拦截器为自定义拦截器 -->
+    	<!-- 设置默认的拦截器栈(注意此标签不在interceptors标签下) -->
     	<default-interceptor-ref name="globalStack"></default-interceptor-ref>
     	
     	<!-- 此包下的全局返回视图，global-results标签好像必须放在拦截器的后面 -->

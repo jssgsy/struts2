@@ -37,7 +37,7 @@
 <h3>通过表单post方式访问action的方法(test)</h3>
 <form method="post" action="<%=path %>/default/studentAction!test?student.age=24" >
  	name:<input type="text" name="student.name" /> 	
-	<input type="submit" value="post方式可以直接将参数放在action后，age(24)参数放在action后放在" />
+	<input type="submit" value="提交" />
 </form>
 
 <!-- 跳转到ztree和ajax综合使用的demo上 -->
