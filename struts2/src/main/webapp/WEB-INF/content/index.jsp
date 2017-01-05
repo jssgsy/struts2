@@ -71,6 +71,12 @@
 <a href="<%=path %>/default/jxlAction!showContents"><h3>跳转到jxl测试页面</h3></a>
 
 
+<h1>strust2+json测试</h1>
+分别访问如下链接以便观察结果:<br>
+<a href="<%=path%>/json/ajaxAction!processAjax2">只有jsonMap属性被序列化成json：processAjax2</a><br>
+<a href="<%=path%>/json/ajaxAction!processAjax3">所以属性都被序列化成果断：processAjax3</a><br>
+<a href="<%=path%>/json/ajaxAction!processAjax4">只有jsonMap属性的name和address属性被序列化成json：processAjax4</a><br>
+<a href="<%=path%>/json/ajaxAction!processAjax5">只有stu属性被序列化，且过滤掉空值：processAjax5</a><br>
 
 </body>
 </html>

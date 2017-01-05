@@ -62,9 +62,7 @@
 			<result name="servletContext">/WEB-INF/content/servletContext.jsp</result>
 		</action>
 		
-		<!-- 配置ztree和ajax需要用到的action -->
-		<action name="ajaxAction" class="com.univ.action.AjaxAction">
-		</action>
+
 		
 		<!-- 专门为拦截器的演示配置一个拦截器，不污染其他代码 -->
 		<action name="interceptorAction" class="com.univ.action.IntercepterAction">
@@ -110,5 +108,40 @@
 		</action>
 		
 		
+    </package>
+
+    <!--需要使用到json的action放在这里，继承自json-default(本身继承自struts-default)-->
+    <package name="json" namespace="/json" extends="json-default" >
+		<action name="ajaxAction" class="com.univ.action.AjaxAction">
+            <!--指定返回类型为json-->
+			<result type="json" name="jsonResult2">
+                <!--此时Action的属性只有jsonMap被序列化成json返回到前台，属性stu不会-->
+                <param name="root">jsonMap</param>
+            </result>
+
+            <result type="json" name="jsonResult3">
+                <!--不使用root指定则所有的属性都将被序列化成json并返回给前台-->
+            </result>
+
+            <result type="json" name="jsonResult4">
+                <!--用root指定只有jsonMap将会序列化-->
+                <param name="root">jsonMap</param>
+                <!--指定只有jsonMap的name和address属性将被序列化，其它的属性不会被序列化-->
+                <param name="includeProperties">name,address</param>
+            </result>
+
+            <result type="json" name="jsonResult5">
+                <!--用root指定stu将被序列化成json并返回给前台-->
+                <param name="root">stu</param>
+                <!--stu中的属性值为null的不被序列化-->
+                <!--<param name="excludeNullProperties">true</param>-->
+            </result>
+
+            <!--处理非ajax请求-->
+            <result name="normal1">/resources/easyui/jquery.min.js</result>
+            <result name="normal2">/resources/easyui/jquery.min.js</result>
+
+		</action>
+
     </package>
 </struts>
