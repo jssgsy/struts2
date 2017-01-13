@@ -32,7 +32,8 @@
     			<interceptor-ref name="globalActionInterceptor"></interceptor-ref>
     		</interceptor-stack>
     	</interceptors>
-    	
+
+
     	<!-- 设置默认的拦截器栈(注意此标签不在interceptors标签下) -->
     	<default-interceptor-ref name="globalStack"></default-interceptor-ref>
     	
@@ -40,9 +41,27 @@
     	<global-results>
     		<!-- 未登陆用户访问action时重定向到登陆页面，注意这里需要采用重定向（转发时地址栏不变，看起来会很奇怪） -->
     		<result type="redirect" name="login">/login.jsp</result>
+
+            <!--给全局异常映射使用-->
+            <result name="exception1">/WEB-INF/exception/exception1.jsp</result>
+            <result name="exception2">/WEB-INF/exception/exception2.jsp</result>
     	</global-results>
-    	
-    	<action name="loginAction" class="com.univ.action.LoginAction">
+
+        <!--
+            配置全局异常映射
+            struts2中的异常映射需要exception拦截器的支持，不过default包中已经默认开启了。
+            Struts2中异常映射分为全局和局部的，全局异常映射配置在global-exception-mappings标签下的子标签exception-mapping中，
+            局部异常映射配置在action标签下的exception-mapping中。
+            exception ：抛出的异常类型；
+            result : 异常发生后应该跳转的逻辑视图名；
+        -->
+        <global-exception-mappings>
+            <!--如果抛出的具体异常全局和局部异常中都没有配置，则会被此异常捕获到，和异常捕获的机制一样-->
+            <exception-mapping exception="java.lang.Exception" result="exception1"></exception-mapping>
+            <exception-mapping exception="java.lang.NullPointerException" result="exception2"></exception-mapping>
+        </global-exception-mappings>
+
+        <action name="loginAction" class="com.univ.action.LoginAction">
 			<result name="success">/WEB-INF/content/index.jsp</result>
 			<!-- 注意，登陆action不能被拦截，否则永远无法登陆，因为此时还没有进行操作的用户是否通过认证 ；
 			这里的方法也很有趣，让默认的拦截器拦截此action，而不是上面定义的全局拦截器-->
@@ -106,6 +125,12 @@
 		<action name="jxlAction" class="com.univ.action.JxlAction">
 			<result name="success">/WEB-INF/content/jxl.jsp</result>
 		</action>
+
+        <action name="exceptionAction" class="com.univ.action.ExceptionAction">
+            <!--配置局部异常映射-->
+            <exception-mapping exception="java.sql.SQLException" result="exception3"></exception-mapping>
+            <result name="exception3">/WEB-INF/exception/exception3.jsp</result>
+        </action>
 		
 		
     </package>

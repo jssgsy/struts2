@@ -78,5 +78,11 @@
 <a href="<%=path%>/json/ajaxAction!processAjax4">只有jsonMap属性的name和address属性被序列化成json：processAjax4</a><br>
 <a href="<%=path%>/json/ajaxAction!processAjax5">只有stu属性被序列化，且过滤掉空值：processAjax5</a><br>
 
+<h1>strust2异常处理机制测试</h1>
+<a href="<%=path%>/default/exceptionAction!exception1">NullPointerException</a><br>
+<a href="<%=path%>/default/exceptionAction!exception2">SQLException</a><br>
+<a href="<%=path%>/default/exceptionAction!exception3">Exception</a><br>
+<a href="<%=path%>/default/exceptionAction!exception4">ClassCastException</a><br>
+
 </body>
 </html>
