@@ -84,5 +84,16 @@
 <a href="<%=path%>/default/exceptionAction!exception3">Exception</a><br>
 <a href="<%=path%>/default/exceptionAction!exception4">ClassCastException</a><br>
 
+
+<h1>不同类型变量的传值测试</h1>
+<form method="get" action="<%=path %>/default/parameterAction!parameter" >
+    id:<input type="text" name="id" /><br>
+    student.name:<input type="text" name="student.name" /><br>
+    stuList[0].name:<input type="text" name="stuList[0].name" /><br>
+    简单类型数组strArr<input type="text" name="strArr" /><br>
+    简单类型数组strArr<input type="text" name="strArr" /><br>
+    <input type="submit" value="ok" />
+</form>
+
 </body>
 </html>

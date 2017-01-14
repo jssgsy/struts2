@@ -131,7 +131,11 @@
             <exception-mapping exception="java.sql.SQLException" result="exception3"></exception-mapping>
             <result name="exception3">/WEB-INF/exception/exception3.jsp</result>
         </action>
-		
+
+        <!--不同类型变量传值方式的action-->
+        <action name="parameterAction" class="com.univ.action.ParameterAction">
+            <result name="parameter">/WEB-INF/content/parameter.jsp</result>
+        </action>
 		
     </package>
 
